@@ -31,15 +31,15 @@ app.get('/strings/lower/:string', (req, res) => {
   res.json({ result: lowercase(req.params.string) });
 });
 
-app.get('/strings/first-characters/:string', (req, res) => {
+app.get('/strings/first-character/:string', (req, res) => {
   const { string } = req.params;
   res.status(200).json({ result: firstCharacter(string) });
 });
 
 app.get('/strings/first-characters/:string', (req, res) => {
   const { string } = req.params;
-  const { query } = parseInt(req.query);
-  res.status(200).json({ result: firstCharacters(string, query) });
+  const { length } = req.query;
+  res.status(200).json({ result: firstCharacters(string, length) });
 });
 
 // NUMBERS
