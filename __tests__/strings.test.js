@@ -59,7 +59,7 @@ describe('/strings', () => {
         });
     });
 
-    it('returns the first n character of the string when passed a query parameter', done => {
+    xit('returns the first n character of the string when passed a query parameter', done => {
       request(app)
         .get('/strings/first-characters/sd32fg45')
         .query({ length: 4 })
