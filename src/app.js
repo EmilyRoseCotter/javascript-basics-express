@@ -7,9 +7,11 @@ const {
   firstCharacter,
 } = require('./lib/strings');
 
-const { add, subtract } = require('./lib/numbers');
+const { add, subtract, multiply, divide, remainder } = require('./lib/numbers');
 
 const app = express();
+
+app.use(express.json());
 
 // STRINGS
 
@@ -61,6 +63,57 @@ app.get('/numbers/subtract/:num1/from/:num2', (req, res) => {
     res.status(400).json({ error: 'Parameters must be valid numbers.' });
   } else {
     res.status(200).json({ result: subtract(num2, num1) });
+  }
+});
+
+app.post('/numbers/multiply', (req, res) => {
+  const { a, b } = req.body;
+
+  if (!a || !b) {
+    res.status(400).send({ error: 'Parameters "a" and "b" are required.' });
+  }
+  if (Number.isNaN(Number(a)) || Number.isNaN(Number(b)) === NaN) {
+    res.status(400).send({ error: 'Parameters "a" and "b" must be valid numbers.' });
+  } else {
+    res.status(200).send({ result: multiply(req.body.a, req.body.b) });
+  }
+});
+
+app.post('/numbers/divide', (req, res) => {
+  const { a, b } = req.body;
+
+  if (a === 0) {
+    return res.status(200).send({ result: 0 });
+  }
+  if (b === 0) {
+    return res.status(400).send({ error: 'Unable to divide by 0.' });
+  }
+  if (!a || !b) {
+    res.status(400).send({ error: 'Parameters "a" and "b" are required.' });
+  }
+  if (Number.isNaN(Number(a)) || Number.isNaN(Number(b)) === NaN) {
+    res.status(400).send({ error: 'Parameters "a" and "b" must be valid numbers.' });
+  } else {
+    res.status(200).send({ result: divide(req.body.a, req.body.b) });
+  }
+});
+
+app.post('/numbers/remainder', (req, res) => {
+  const { a, b } = req.body;
+
+  if (a === 0) {
+    return res.status(200).send({ result: 0 });
+  }
+  if (b === 0) {
+    return res.status(400).send({ error: 'Unable to divide by 0.' });
+  }
+  if (!a || !b) {
+    res.status(400).send({ error: 'Parameters "a" and "b" are required.' });
+  }
+  if (Number.isNaN(Number(a)) || Number.isNaN(Number(b)) === NaN) {
+    res.status(400).send({ error: 'Parameters must be valid numbers.' });
+  } else {
+    res.status(200).send({ result: remainder(req.body.a, req.body.b) });
   }
 });
 
