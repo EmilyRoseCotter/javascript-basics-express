@@ -9,6 +9,8 @@ const {
 
 const { add, subtract, multiply, divide, remainder } = require('./lib/numbers');
 
+const { negate, truthiness, isOdd, startsWith } = require('./lib/booleans');
+
 const app = express();
 
 app.use(express.json());
@@ -116,5 +118,41 @@ app.post('/numbers/remainder', (req, res) => {
     res.status(200).send({ result: remainder(req.body.a, req.body.b) });
   }
 });
+
+// BOOLEANS
+
+app.post('/booleans/negate', (req, res) => {
+  const a = req.body.value;
+
+  res.status(200).send({ result: negate(a) });
+});
+
+app.post('/booleans/truthiness', (req, res) => {
+  const a = req.body.value;
+
+  res.status(200).send({ result: truthiness(a) });
+});
+
+app.get('/booleans/is-odd/:a', (req, res) => {
+  const a = parseFloat(req.params.a);
+
+  if (Number.isNaN(Number(a))) {
+    res.status(400).json({ error: 'Parameter must be a number.' });
+  } else {
+    res.status(200).json({ result: isOdd(a) });
+  }
+});
+
+app.get('/booleans/:string/starts-with/:char', (req, res) => {
+  const { string, char } = req.params;
+
+  if (char.length > 1) {
+    res.status(400).json({ error: 'Parameter "character" must be a single character.' });
+  } else {
+    res.status(200).json({ result: startsWith(char, string) });
+  }
+});
+
+// ARRAYS
 
 module.exports = app;
